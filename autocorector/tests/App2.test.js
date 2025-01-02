@@ -13,7 +13,8 @@ import {mock2} from '../utils/mock2';
 const mytestconfig = {
   server_url: "http://nuevoserver.com",
   api_key: "apikeyfake_nohacefaltaporquehagomockdefetch",
-  num_items: 3,
+  num_items_query: 8,
+  num_items_show: 7,
   default_lat: 41.416775,
   default_lon: -4.703790,
   use_server: true,
@@ -50,10 +51,11 @@ test(JSON.stringify(testinfo), async () => {
   const resultado = document.querySelector('#resultados');
   expect(resultado).toBeInTheDocument();
   expect(resultado).toHaveTextContent(/El tiempo/i);
-  expect(resultado).toHaveTextContent(/Inventado2\/Pais2/i);
-  expect(resultado).toHaveTextContent("4/8/2022");
+  expect(resultado).toHaveTextContent(/Reutte/);
+  expect(resultado).toHaveTextContent("23/9/2024");
+  expect(resultado).toHaveTextContent("28/9/2024");
   const imagenes = document.querySelectorAll('.tiempoimg');
-  expect(imagenes).toHaveLength(mytestconfig.num_items);
+  expect(imagenes).toHaveLength(mytestconfig.num_items_show);
 });
 
 testinfo = {
@@ -81,10 +83,9 @@ test(JSON.stringify(testinfo), async () => {
   await waitFor(() => {
     const url = global.fetch.mock.calls[0][0];
     expect(url).toMatch(mytestconfig.server_url);
-    expect(url).toMatch("appid="+mytestconfig.api_key);
-    expect(url).toMatch("lat=45.6");
-    expect(url).toMatch("lon=-15.6");
-  });
+    expect(url).toMatch("key="+mytestconfig.api_key);
+    expect(url).toMatch("q=45.6,-15.6");
+    expect(url).toMatch("days="+mytestconfig.num_items_query);});
 });
 
 
@@ -97,8 +98,8 @@ testinfo = {
 test(JSON.stringify(testinfo), async () => {
   //mock de fetch. O se pone aquí o en beforeEach, si no no tira
   global.fetch = jest.fn(() => Promise.resolve({
-    status: 500,
-    json: () => Promise.resolve({ cod: "500", message: "XXX - YYY - ZZZ"})
+    status: 400,
+    json: () => Promise.resolve({ error: {code: "400", message: "XXX - YYY - ZZZ"}})
   }));
   
   render(<App />);
@@ -109,6 +110,7 @@ test(JSON.stringify(testinfo), async () => {
   const resultado = document.querySelector('#error');
   expect(resultado).toBeInTheDocument();
   expect(resultado).toHaveTextContent(/error/i);
+  expect(resultado).toHaveTextContent(/XXX - YYY - ZZZ/i);
 });
 
 

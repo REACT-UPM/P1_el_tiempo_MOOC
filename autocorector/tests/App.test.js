@@ -8,11 +8,13 @@ import Header from '../../src/Header';
 import Resultados from '../../src/Resultados';
 import user_info from '../../user.json';
 import {mock1} from '../utils/mock';
+import {mock3} from '../utils/mock3';
 
 const mytestconfig = {
-  server_url: "https://api.openweathermap.org/data/2.5/onecall",
+  server_url: "http://api.weatherapi.com/v1/forecast.json",
   api_key: "apikeyfake_nohacefaltaporquehagomockdefetch",
-  num_items: 4,
+  num_items_query: 8,
+  num_items_show: 7,
   default_lat: 41.416775,
   default_lon: -4.703790,
   use_server: false,
@@ -37,9 +39,9 @@ let testinfo = {
 }
 test(JSON.stringify(testinfo), () => {
   render(<Header />);
-  const cabecera = document.querySelector('#cabecera');
-  const logo = document.querySelector('.logo');
-  const mensaje = document.querySelector('.mensaje');
+  const cabecera = document.querySelector('#micabecera');
+  const logo = document.querySelector('.milogo');
+  const mensaje = document.querySelector('#mensaje');
 
   expect(cabecera).toBeInTheDocument();
   expect(user_info).toHaveProperty('name');
@@ -107,19 +109,20 @@ test(JSON.stringify(testinfo), () => {
 
 
 testinfo = {
-  name: "El componente 'Resultados' recibe dos atributos (props) 'numitems' que indica cuantas tarjetas debe mostrar e 'items' con los datos que debe renderizar",
+  name: "El componente 'Resultados' recibe dos atributos (props) 'numitems' que indica cuantas tarjetas debe mostrar y 'datos' con los datos que debe renderizar",
   score: 2,
   msg_ok: "Componente Resultados funciona adecuadamente",
   msg_error: "Componente Resultadoss NO funciona correctamente"
 }
 test(JSON.stringify(testinfo), async () => {
-  render(<Resultados numitems={6} items={mock1} />);
+  render(<Resultados numitems={6} datos={mock3} />);
   const resultado = document.querySelector('#resultados');
   expect(resultado).toBeInTheDocument();  
   expect(resultado).toHaveTextContent(/El tiempo/i);
-  expect(resultado).toHaveTextContent(/Inventado\/Pais/i);
-  expect(resultado).toHaveTextContent("30/6/2022");
-  expect(resultado).toHaveTextContent("5/7/2022");
+  expect(resultado).toHaveTextContent(/Langenzenn/);
+  expect(resultado).toHaveTextContent(/Europe\/Berlin/);
+  expect(resultado).toHaveTextContent("23/9/2024");
+  expect(resultado).toHaveTextContent("28/9/2024");
   const imagenes = document.querySelectorAll('.tiempoimg');
   expect(imagenes).toHaveLength(6);
 });
@@ -136,13 +139,15 @@ test(JSON.stringify(testinfo), async () => {
   const buscar = document.querySelector('#buscar');
   fireEvent.click(buscar);
   //espero a que cargue los resultados, para ello uso scren.getAllByText que devuelve una promesa
-  await waitFor(() => screen.getAllByText(/2022/i));
+  await waitFor(() => screen.getAllByText(/2024/i));
   const resultado = document.querySelector('#resultados');
   expect(resultado).toBeInTheDocument();
   expect(resultado).toHaveTextContent(/El tiempo/i);
-  expect(resultado).toHaveTextContent(/Europe\/Madrid/i);
-  expect(resultado).toHaveTextContent("16/9/2022");
+  expect(resultado).toHaveTextContent(/Lemsid/);
+  expect(resultado).toHaveTextContent(/Africa\/El_Aaiun/);
+  expect(resultado).toHaveTextContent("23/9/2024");
+  expect(resultado).toHaveTextContent("29/9/2024");
   const imagenes = document.querySelectorAll('.tiempoimg');
-  expect(imagenes).toHaveLength(mytestconfig.num_items);
+  expect(imagenes).toHaveLength(mytestconfig.num_items_show);
 });
 
