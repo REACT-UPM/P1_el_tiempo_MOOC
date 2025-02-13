@@ -18,14 +18,14 @@ const mytestconfig = {
   default_lat: 41.416775,
   default_lon: -4.703790,
   use_server: true,
-  force_error: false  
+  force_error: false
 };
 
 jest.setTimeout(10000);
 
 jest.mock('../../src/config/config', () => ( {
   __esModule: true,
-  default: mytestconfig  
+  default: mytestconfig
 } ));
 
 afterAll(() => jest.resetAllMocks());
@@ -42,7 +42,7 @@ test(JSON.stringify(testinfo), async () => {
     status: 200,
     json: () => Promise.resolve(mock2)
   }));
-  
+
   render(<App />);
   const buscar = document.querySelector('#buscar');
   fireEvent.click(buscar);
@@ -77,7 +77,7 @@ test(JSON.stringify(testinfo), async () => {
   fireEvent.change(lon, {target: {value: -15.6}});
   const buscar = document.querySelector('#buscar');
   await fireEvent.click(buscar);
-  
+
   //necesitamos waitFor porque hacemos un re-render asincrono después del fetch en App.js - https://davidwcai.medium.com/react-testing-library-and-the-not-wrapped-in-act-errors-491a5629193b
   //además he tenido que añadir await a fireEvent.click(buscar) para que funcione
   await waitFor(() => {
@@ -92,8 +92,8 @@ test(JSON.stringify(testinfo), async () => {
 testinfo = {
   name: "La aplicación llama al servidor si se indica así en la configuración y funciona para códigos de error",
   score: 1.5,
-  msg_ok: "La aplicación llama al servidor adecuadamente y funciona bien con códigos de error",
-  msg_error: "La aplicación NO llama al servidor adecuadamente o NO funciona bien con códigos de error"
+  msg_ok: "La aplicación llama al servidor adecuadamente y funciona bien con códigos de error.",
+  msg_error: "La aplicación NO llama al servidor adecuadamente o NO funciona bien con códigos de error."
 }
 test(JSON.stringify(testinfo), async () => {
   //mock de fetch. O se pone aquí o en beforeEach, si no no tira
@@ -101,7 +101,7 @@ test(JSON.stringify(testinfo), async () => {
     status: 400,
     json: () => Promise.resolve({ error: {code: "400", message: "XXX - YYY - ZZZ"}})
   }));
-  
+
   render(<App />);
   const buscar = document.querySelector('#buscar');
   fireEvent.click(buscar);
@@ -112,6 +112,3 @@ test(JSON.stringify(testinfo), async () => {
   expect(resultado).toHaveTextContent(/error/i);
   expect(resultado).toHaveTextContent(/XXX - YYY - ZZZ/i);
 });
-
-
-

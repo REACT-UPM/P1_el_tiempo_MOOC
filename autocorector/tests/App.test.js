@@ -18,14 +18,14 @@ const mytestconfig = {
   default_lat: 41.416775,
   default_lon: -4.703790,
   use_server: false,
-  force_error: false  
+  force_error: false
 };
 
 jest.setTimeout(10000);
 
 jest.mock('../../src/config/config', () => ( {
   __esModule: true,
-  default: mytestconfig  
+  default: mytestconfig
 } ));
 
 afterAll(() => jest.resetAllMocks());
@@ -86,7 +86,7 @@ test(JSON.stringify(testinfo), () => {
   expect(buscar).toBeInTheDocument();
   expect(buscar.tagName).toBe('BUTTON');
   expect(lat).toHaveValue(mytestconfig.default_lat);
-  expect(lon).toHaveValue(mytestconfig.default_lon);  
+  expect(lon).toHaveValue(mytestconfig.default_lon);
 });
 
 
@@ -103,7 +103,7 @@ test(JSON.stringify(testinfo), () => {
   fireEvent.change(lat, {target: {value: 45.6}})
   fireEvent.change(lon, {target: {value: -15.6}})
   expect(lat).toHaveValue(45.6);
-  expect(lon).toHaveValue(-15.6);  
+  expect(lon).toHaveValue(-15.6);
 });
 
 
@@ -111,13 +111,13 @@ test(JSON.stringify(testinfo), () => {
 testinfo = {
   name: "El componente 'Resultados' recibe dos atributos (props) 'numitems' que indica cuantas tarjetas debe mostrar y 'datos' con los datos que debe renderizar",
   score: 2,
-  msg_ok: "Componente Resultados funciona adecuadamente",
-  msg_error: "Componente Resultadoss NO funciona correctamente"
+  msg_ok: "Componente Resultados funciona adecuadamente.",
+  msg_error: "Componente Resultadoss NO funciona correctamente."
 }
 test(JSON.stringify(testinfo), async () => {
   render(<Resultados numitems={6} datos={mock3} />);
   const resultado = document.querySelector('#resultados');
-  expect(resultado).toBeInTheDocument();  
+  expect(resultado).toBeInTheDocument();
   expect(resultado).toHaveTextContent(/El tiempo/i);
   expect(resultado).toHaveTextContent(/Langenzenn/);
   expect(resultado).toHaveTextContent(/Europe\/Berlin/);
@@ -131,8 +131,8 @@ test(JSON.stringify(testinfo), async () => {
 testinfo = {
   name: "La aplicación al hacer click en 'buscar' carga los datos de constants/mock.js si en la configuración se indica que no se use el servidor",
   score: 1,
-  msg_ok: "Datos de mock.js cargados adecuadamente",
-  msg_error: "Datos de mock.js NO renderizados correctamente"
+  msg_ok: "Datos de mock.js cargados adecuadamente.",
+  msg_error: "Datos de mock.js NO renderizados correctamente."
 }
 test(JSON.stringify(testinfo), async () => {
   render(<App />);
@@ -150,4 +150,3 @@ test(JSON.stringify(testinfo), async () => {
   const imagenes = document.querySelectorAll('.tiempoimg');
   expect(imagenes).toHaveLength(mytestconfig.num_items_show);
 });
-
